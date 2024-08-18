@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "bot.js",
+    "start": "node bot.js",
     "lint": "next lint"
   },
   "dependencies": {
