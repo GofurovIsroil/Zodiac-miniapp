@@ -16,3 +16,23 @@ module.exports = {
   },
   plugins: [],
 };
+
+
+// curl -X POST "https://api.telegram.org/bot6683288372:AAHjHsIWWEdMwXhieYUdQ5IN4t9qnW-wA9I/sendMessage" \
+// -H "Content-Type: application/json" \
+// -d '{
+//       "chat_id": "1387315974",
+//       "text": "Нажмите кнопку ниже, чтобы открыть WebApp:",
+//       "reply_markup": {
+//         "inline_keyboard": [
+//           [
+//             {
+//               "text": "Открыть WebApp",
+//               "web_app": {
+//                 "url": "https://zodiac-miniapp.vercel.app/"
+//               }
+//             }
+//           ]
+//         ]
+//       }
+//     }'
