@@ -36,3 +36,8 @@ module.exports = {
 //         ]
 //       }
 //     }'
+
+
+// curl -X POST "https://api.telegram.org/bot6683288372:AAHjHsIWWEdMwXhieYUdQ5IN4t9qnW-wA9I/sendMessage" \
+// > -H "Content-Type: application/json" \
+// > -d @message.json

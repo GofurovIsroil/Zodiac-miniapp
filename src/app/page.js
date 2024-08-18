@@ -60,7 +60,9 @@ export default function Home() {
       }
 
       const data = await response.json();
-      return data.description;
+      console.log(data);
+
+      return data.horoscope;
     } catch (error) {
       console.error('Ошибка:', error);
       return 'Описание недоступно';
@@ -68,20 +70,56 @@ export default function Home() {
   };
 
   const handleZodiacClick = async (sign) => {
-    const description = await fetchZodiacDescription(sign, currentLanguage);
-    setDescription(description);
+    const descriptionFromData = await fetchZodiacDescription(sign, currentLanguage);
+    setDescription(descriptionFromData);
     setSelectedZodiac(sign);
   };
+
+  console.log(description);
+
 
   const toggleLanguage = () => {
     setCurrentLanguage(currentLanguage === 'en' ? 'ru' : 'en');
   };
 
+  // const fs = require('fs');
+
+  // // Example usage
+  // fs.readFile('path/to/file.txt', 'utf8', (err, data) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return;
+  //   }
+  //   console.log(data);
+  // });
+
+  // const TelegramBot = require('node-telegram-bot-api');
+
+  // const token = '6683288372:AAHjHsIWWEdMwXhieYUdQ5IN4t9qnW-wA9I';
+  // const bot = new TelegramBot(token, { polling: true });
+
+  // bot.onText(/\/start/, (msg) => {
+  //   const chatId = msg.chat.id;
+  //   const options = {
+  //     reply_markup: {
+  //       inline_keyboard: [
+  //         [
+  //           {
+  //             text: 'Открыть WebApp',
+  //             web_app: { url: 'https://zodiac-miniapp.vercel.app/' }
+  //           }
+  //         ]
+  //       ]
+  //     }
+  //   };
+  //   bot.sendMessage(chatId, 'Нажмите кнопку ниже, чтобы открыть WebApp:', options);
+  // });
+
 
   return (
     <div>
-      <button onClick={toggleLanguage}>
-        {currentLanguage === 'ru' ? 'Русский' : 'English'}
+      <button onClick={toggleLanguage} className='ml-4 bg-slate-500 p-2 text-white rounded-md md:hover:bg-slate-400'>
+        {currentLanguage === 'ru' ? 'Поменять на Английский язык' : 'Switch to Russian Language'}
       </button>
 
       <div className="grid grid-cols-2 gap-4 p-4">
