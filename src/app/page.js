@@ -1,113 +1,119 @@
-import Image from "next/image";
+"use client"
+import { useEffect, useState } from 'react';
+import ZodiacList from '../components/ZodiacList';
+
+
 
 export default function Home() {
+  const [selectedZodiac, setSelectedZodiac] = useState(null);
+  const [description, setDescription] = useState('');
+  const [currentLanguage, setCurrentLanguage] = useState('en');
+
+  const getTelegramLanguage = () => {
+    if (typeof window !== 'undefined' && window.Telegram && window.Telegram.WebApp) {
+      const userLanguage = window.Telegram.WebApp.initDataUnsafe.user?.language_code;
+      return userLanguage;
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    const userLanguage = getTelegramLanguage();
+    if (userLanguage === 'ru') {
+      setCurrentLanguage('ru');
+    } else {
+      setCurrentLanguage('en');
+    }
+  }, []);
+
+  const zodiacSigns = [
+    { sign: 'Aries', dateRange: currentLanguage === 'ru' ? '21 марта - 19 апреля' : 'March 21 - April 19', icon: '♈' },
+    { sign: 'Taurus', dateRange: currentLanguage === 'ru' ? '20 апреля - 20 мая' : 'April 20 - May 20', icon: '♉' },
+    { sign: 'Gemini', dateRange: currentLanguage === 'ru' ? '21 мая - 20 июня' : 'May 21 - June 20', icon: '♊' },
+    { sign: 'Cancer', dateRange: currentLanguage === 'ru' ? '21 июня - 22 июля' : 'June 21 - July 22', icon: '♋' },
+    { sign: 'Leo', dateRange: currentLanguage === 'ru' ? '23 июля - 22 августа' : 'July 23 - August 22', icon: '♌' },
+    { sign: 'Virgo', dateRange: currentLanguage === 'ru' ? '23 августа - 22 сентября' : 'August 23 - September 22', icon: '♍' },
+    { sign: 'Libra', dateRange: currentLanguage === 'ru' ? '23 сентября - 22 октября' : 'September 23 - October 22', icon: '♎' },
+    { sign: 'Scorpio', dateRange: currentLanguage === 'ru' ? '23 октября - 21 ноября' : 'October 23 - November 21', icon: '♏' },
+    { sign: 'Sagittarius', dateRange: currentLanguage === 'ru' ? '22 ноября - 21 декабря' : 'November 22 - December 21', icon: '♐' },
+    { sign: 'Capricorn', dateRange: currentLanguage === 'ru' ? '22 декабря - 19 января' : 'December 22 - January 19', icon: '♑' },
+    { sign: 'Aquarius', dateRange: currentLanguage === 'ru' ? '20 января - 18 февраля' : 'January 20 - February 18', icon: '♒' },
+    { sign: 'Pisces', dateRange: currentLanguage === 'ru' ? '19 февраля - 20 марта' : 'February 19 - March 20', icon: '♓' },
+  ];
+
+  const fetchZodiacDescription = async (sign, language = 'en') => {
+    try {
+      const response = await fetch('https://poker247tech.ru/get_horoscope/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sign: sign.toLowerCase(),
+          language: language === 'ru' ? 'original' : 'translated',
+          period: 'today',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Ошибка при получении данных');
+      }
+
+      const data = await response.json();
+      return data.description;
+    } catch (error) {
+      console.error('Ошибка:', error);
+      return 'Описание недоступно';
+    }
+  };
+
+  const handleZodiacClick = async (sign) => {
+    const description = await fetchZodiacDescription(sign, currentLanguage);
+    setDescription(description);
+    setSelectedZodiac(sign);
+  };
+
+  const toggleLanguage = () => {
+    setCurrentLanguage(currentLanguage === 'en' ? 'ru' : 'en');
+  };
+
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div>
+      <button onClick={toggleLanguage}>
+        {currentLanguage === 'ru' ? 'Русский' : 'English'}
+      </button>
+
+      <div className="grid grid-cols-2 gap-4 p-4">
+        {zodiacSigns.map((zodiac) => (
+          <div
+            key={zodiac.sign}
+            className="flex items-center justify-between p-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300"
+            onClick={() => handleZodiacClick(zodiac.sign)}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+            <div>
+              <h3 className="text-lg font-semibold">{zodiac.sign}</h3>
+              <p className="text-sm text-gray-600">{zodiac.dateRange}</p>
+            </div>
+            <div>{zodiac.icon}</div>
+          </div>
+        ))}
+
+        {selectedZodiac && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white p-4 rounded-lg max-w-md w-full">
+              <h3 className="text-lg font-semibold">{selectedZodiac}</h3>
+              <p className="mt-2">{description}</p>
+              <button
+                onClick={() => setSelectedZodiac(null)}
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                {currentLanguage === 'ru' ? 'Назад' : 'Back'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
