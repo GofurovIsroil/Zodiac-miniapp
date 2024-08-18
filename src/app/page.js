@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
-import ZodiacList from '../components/ZodiacList';
+
 
 
 
@@ -8,6 +8,7 @@ export default function Home() {
   const [selectedZodiac, setSelectedZodiac] = useState(null);
   const [description, setDescription] = useState('');
   const [currentLanguage, setCurrentLanguage] = useState('en');
+
 
   const getTelegramLanguage = () => {
     if (typeof window !== 'undefined' && window.Telegram && window.Telegram.WebApp) {
@@ -27,18 +28,18 @@ export default function Home() {
   }, []);
 
   const zodiacSigns = [
-    { sign: 'Aries', dateRange: currentLanguage === 'ru' ? '21 марта - 19 апреля' : 'March 21 - April 19', icon: '♈' },
-    { sign: 'Taurus', dateRange: currentLanguage === 'ru' ? '20 апреля - 20 мая' : 'April 20 - May 20', icon: '♉' },
-    { sign: 'Gemini', dateRange: currentLanguage === 'ru' ? '21 мая - 20 июня' : 'May 21 - June 20', icon: '♊' },
-    { sign: 'Cancer', dateRange: currentLanguage === 'ru' ? '21 июня - 22 июля' : 'June 21 - July 22', icon: '♋' },
-    { sign: 'Leo', dateRange: currentLanguage === 'ru' ? '23 июля - 22 августа' : 'July 23 - August 22', icon: '♌' },
-    { sign: 'Virgo', dateRange: currentLanguage === 'ru' ? '23 августа - 22 сентября' : 'August 23 - September 22', icon: '♍' },
-    { sign: 'Libra', dateRange: currentLanguage === 'ru' ? '23 сентября - 22 октября' : 'September 23 - October 22', icon: '♎' },
-    { sign: 'Scorpio', dateRange: currentLanguage === 'ru' ? '23 октября - 21 ноября' : 'October 23 - November 21', icon: '♏' },
-    { sign: 'Sagittarius', dateRange: currentLanguage === 'ru' ? '22 ноября - 21 декабря' : 'November 22 - December 21', icon: '♐' },
-    { sign: 'Capricorn', dateRange: currentLanguage === 'ru' ? '22 декабря - 19 января' : 'December 22 - January 19', icon: '♑' },
-    { sign: 'Aquarius', dateRange: currentLanguage === 'ru' ? '20 января - 18 февраля' : 'January 20 - February 18', icon: '♒' },
-    { sign: 'Pisces', dateRange: currentLanguage === 'ru' ? '19 февраля - 20 марта' : 'February 19 - March 20', icon: '♓' },
+    { sign: currentLanguage === 'en' ? 'Aries' : 'Овен', icon: '♈' },
+    { sign: currentLanguage === 'en' ? 'Taurus' : 'Телец', icon: '♉' },
+    { sign: currentLanguage === 'en' ? 'Gemini' : 'Близнецы', icon: '♊' },
+    { sign: currentLanguage === 'en' ? 'Cancer' : 'Рак', icon: '♋' },
+    { sign: currentLanguage === 'en' ? 'Leo' : 'Лев', icon: '♌' },
+    { sign: currentLanguage === 'en' ? 'Virgo' : 'Дева', icon: '♍' },
+    { sign: currentLanguage === 'en' ? 'Libra' : 'Весы', icon: '♎' },
+    { sign: currentLanguage === 'en' ? 'Scorpio' : 'Скорпион', icon: '♏' },
+    { sign: currentLanguage === 'en' ? 'Sagittarius' : 'Стрелец', icon: '♐' },
+    { sign: currentLanguage === 'en' ? 'Capricorn' : 'Козерог', icon: '♑' },
+    { sign: currentLanguage === 'en' ? 'Aquarius' : 'Водолей', icon: '♒' },
+    { sign: currentLanguage === 'en' ? 'Pisces' : "Рыбы", icon: '♓' },
   ];
 
   const fetchZodiacDescription = async (sign, language = 'en') => {
@@ -94,7 +95,7 @@ export default function Home() {
           >
             <div>
               <h3 className="text-lg font-semibold">{zodiac.sign}</h3>
-              <p className="text-sm text-gray-600">{zodiac.dateRange}</p>
+              <p className="text-sm text-gray-600">{currentLanguage === 'ru' ? 'Сегодня' : 'Today'}</p>
             </div>
             <div>{zodiac.icon}</div>
           </div>
