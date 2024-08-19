@@ -79,7 +79,7 @@ export default function ZodiacList() {
 
     return (
         <div>
-            <button onClick={toggleLanguage} className='ml-4 bg-slate-500 p-2 text-white rounded-md md:hover:bg-slate-400'>
+            <button onClick={toggleLanguage} className='ml-4 bg-slate-500 p-2 text-white rounded-md active:bg-slate-400 md:hover:bg-slate-400'>
                 {currentLanguage === 'ru' ? 'Поменять на Английский язык' : 'Switch to Russian Language'}
             </button>
 
@@ -87,7 +87,7 @@ export default function ZodiacList() {
                 {zodiacSigns.map((zodiac) => (
                     <div
                         key={zodiac.sign}
-                        className="flex items-center justify-between p-4 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300"
+                        className="flex items-center justify-between p-4 bg-gray-200 rounded-lg cursor-pointer active:bg-gray-300 md:hover:bg-gray-300"
                         onClick={() => handleZodiacClick(zodiac.sign)}
                     >
                         <div>
@@ -105,7 +105,7 @@ export default function ZodiacList() {
                             <p className="mt-2">{description}</p>
                             <button
                                 onClick={() => setSelectedZodiac(null)}
-                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded active:bg-blue-400 md:hover:bg-blue-400"
                             >
                                 {currentLanguage === 'ru' ? 'Назад' : 'Back'}
                             </button>
