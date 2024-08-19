@@ -25,18 +25,18 @@ export default function ZodiacList() {
     }, []);
 
     const zodiacSigns = [
-        { sign: currentLanguage === 'en' ? 'Aries' : 'Овен', icon: '♈' },
-        { sign: currentLanguage === 'en' ? 'Taurus' : 'Телец', icon: '♉' },
-        { sign: currentLanguage === 'en' ? 'Gemini' : 'Близнецы', icon: '♊' },
-        { sign: currentLanguage === 'en' ? 'Cancer' : 'Рак', icon: '♋' },
-        { sign: currentLanguage === 'en' ? 'Leo' : 'Лев', icon: '♌' },
-        { sign: currentLanguage === 'en' ? 'Virgo' : 'Дева', icon: '♍' },
-        { sign: currentLanguage === 'en' ? 'Libra' : 'Весы', icon: '♎' },
-        { sign: currentLanguage === 'en' ? 'Scorpio' : 'Скорпион', icon: '♏' },
-        { sign: currentLanguage === 'en' ? 'Sagittarius' : 'Стрелец', icon: '♐' },
-        { sign: currentLanguage === 'en' ? 'Capricorn' : 'Козерог', icon: '♑' },
-        { sign: currentLanguage === 'en' ? 'Aquarius' : 'Водолей', icon: '♒' },
-        { sign: currentLanguage === 'en' ? 'Pisces' : "Рыбы", icon: '♓' },
+        { sign: 'Aries', icon: '♈' },
+        { sign: 'Taurus', icon: '♉' },
+        { sign: 'Gemini', icon: '♊' },
+        { sign: 'Cancer', icon: '♋' },
+        { sign: 'Leo', icon: '♌' },
+        { sign: 'Virgo', icon: '♍' },
+        { sign: 'Libra', icon: '♎' },
+        { sign: 'Scorpio', icon: '♏' },
+        { sign: 'Sagittarius', icon: '♐' },
+        { sign: 'Capricorn', icon: '♑' },
+        { sign: 'Aquarius', icon: '♒' },
+        { sign: 'Pisces', icon: '♓' },
     ];
 
     const fetchZodiacDescription = async (sign, language = 'en') => {
@@ -105,7 +105,7 @@ export default function ZodiacList() {
                             <p className="mt-2">{description}</p>
                             <button
                                 onClick={() => setSelectedZodiac(null)}
-                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded active:bg-blue-400 md:hover:bg-blue-400"
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded active:bg-blue-400 hover:bg-blue-400"
                             >
                                 {currentLanguage === 'ru' ? 'Назад' : 'Back'}
                             </button>
